@@ -1,6 +1,12 @@
 import React from 'react';
 import {render} from 'react-dom';
-import { Router, Route, Link, browserHistory, IndexRoute  } from 'react-router'
+import { Router, Route, Link, hashHistory, IndexRoute  } from 'react-router';
+
+
+const app = document.getElementById('app');
+
+
+
 
 export class App extends React.Component {
    render() {
@@ -39,10 +45,18 @@ export class About extends React.Component {
 }
 
 export class Contact extends React.Component {
+
+  navigate(){
+    this.props.history.pushState(null, 'about');
+  }
    render() {
       return (
          <div>
             <h1>Contact...</h1>
+            {this.props.children}
+            <Link to="about">About using link</Link>
+            <button onClick={this.navigate.bind(this)}>Aboutus</button>
+
          </div>
       )
    }
@@ -51,14 +65,13 @@ export class Contact extends React.Component {
 
 
 render((
-   <Router history = {browserHistory}>
-
-        <Route path = "/" component = {App}>
-         <Route path = "home" component = {Home} />
-         <Route path = "about" component = {About} />
-         <IndexRoute component = {Home} />
-         <Route path = "contact" component = {Contact} />
+   <Router history = {hashHistory}>
+      <Route path = "/" component = {App}>
+        <IndexRoute component = {Home} />
+        <Route path = "home" component = {Home} />
+        <Route path = "about" component = {About} />
+        <Route path = "contact" component = {Contact} />
       </Route>
    </Router>
 
-), document.getElementById('app'));
+), app);
